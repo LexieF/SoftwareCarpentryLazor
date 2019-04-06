@@ -7,16 +7,19 @@ Created on Thu Mar 28 23:41:11 2019
 """
 
 import numpy as np
+from copy import deepcopy
+
+import lazor_input
 
 class BoardStatus():
     """
     A class describe the status of the game board.
     """
     def __init__(self, grid, lasers, blocks, points):
-        self.grid = grid
-        self.lasers = lasers
-        self.blocks = blocks
-        self.points = points
+        self.grid = deepcopy(grid)
+        self.lasers = deepcopy(lasers)
+        self.blocks = deepcopy(blocks)
+        self.points = deepcopy(points)
 
 
         
@@ -55,10 +58,11 @@ class BoardStatus():
         y_bound = 2 * len(self.grid)
         
         laser_path = []
-        for l in self.lasers:
+        laser_lines = deepcopy(self.lasers)
+        for l in laser_lines:
             
             start_point = np.array([l[0], l[1]])
-            laser_path.append(start_point)
+            laser_path.append(list(start_point))
             laser_point = start_point
             current_point = start_point
             previous_point = np.array([0, 0])
@@ -70,26 +74,27 @@ class BoardStatus():
                     # Check if there any block on next move
                     pos = coord_trans(current_point, laser_point)
                     if self.grid[pos[0]][pos[1]] == 'o':
-                        laser_path.append(laser_point)
+                        laser_path.append(list(laser_point))
                         current_point = laser_point
                     # Change the direction of the laser
                     elif self.grid[pos[0]][pos[1]] == 'A':
                         if current_point[0] % 2 == 0:
-                            self.lasers.append([current_point[0], current_point[1], -l[2], l[3]])
+                            laser_lines.append([current_point[0], current_point[1], -l[2], l[3]])
                         else: 
-                            self.lasers.append([current_point[0], current_point[1], l[2], -l[3]])
+                            laser_lines.append([current_point[0], current_point[1], l[2], -l[3]])
                     elif self.grid[pos[0]][pos[1]] == 'C':
                         # Refracted lazer
-                        self.lasers.append([laser_point[0], laser_point[1], l[2], l[3]])
+                        laser_lines.append([laser_point[0], laser_point[1], l[2], l[3]])
                         # Reflected lazer
                         if current_point[0] % 2 == 0:
-                            self.lasers.append([current_point[0], current_point[1], -l[2], l[3]])
+                            laser_lines.append([current_point[0], current_point[1], -l[2], l[3]])
                         else: 
-                            self.lasers.append([current_point[0], current_point[1], l[2], -l[3]])
+                            laser_lines.append([current_point[0], current_point[1], l[2], -l[3]])
                     else:
                         break
                 else:
                     break               
+        laser_path = list(dict.fromkeys(laser_path))
         
         return laser_path
     
@@ -158,3 +163,42 @@ class GameTree():
     def __init__(self, init_status):
         self.init_status = init_status
         self.root = TreeNode(self.init_status)
+        
+if __name__ == '__main__':
+    
+    # Test code for BoardStatus class
+    filename = '../Lazor_board/mad_1.bff'
+    grid, lasers, blocks, points = lazor_input.read_lazor_board(filename)
+    bs_test = BoardStatus(grid, lasers, blocks, points)
+    print bs_test.grid
+    print bs_test.lasers
+    print bs_test.blocks
+    print bs_test.points
+    print grid
+    print lasers
+    print blocks
+    print points    
+    print bs_test.laser_pathway()
+    
+    bs_test.put_block([2, 2], 'C')
+    print bs_test.laser_pathway()
+    print bs_test.grid
+    print bs_test.lasers
+    print bs_test.blocks
+    print bs_test.points
+    print grid
+    print lasers
+    print blocks
+    print points
+    
+    bs_test.delete_block([2, 2], 'C')
+    print bs_test.laser_pathway()
+    print bs_test.grid
+    print bs_test.lasers
+    print bs_test.blocks
+    print bs_test.points
+    print grid
+    print lasers
+    print blocks
+    print points
+    # Test end

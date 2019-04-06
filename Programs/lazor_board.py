@@ -4,6 +4,11 @@
 Created on Thu Mar 28 23:41:11 2019
 
 @author: Wenye Deng, Yuchun Wang
+
+This file defines three class:
+    BoardStatus(grid, lasers, blocks, points): describe the status of the game
+    TreeNode
+    GameTree
 """
 
 import numpy as np
@@ -14,6 +19,12 @@ import lazor_input
 class BoardStatus():
     """
     A class describe the status of the game board.
+    
+    **Method**
+    
+        laser_pathway(self)
+        put_block(block_pos, block_type)
+        delete_block(block_pos, block_type)
     """
     def __init__(self, grid, lasers, blocks, points):
         self.grid = deepcopy(grid)
@@ -26,6 +37,15 @@ class BoardStatus():
     def laser_pathway(self):
         """
         A function calculate all the points that laser will pass through on the current status.
+        
+        **Parameters**
+        
+            None
+            
+        **Returns**
+        
+            laser_path: *list, array*
+                Coordinates of all the points that laser pass by.
         """
         def coord_trans(p1, p2):
             '''
@@ -59,29 +79,49 @@ class BoardStatus():
         
         laser_path = []
         laser_lines = deepcopy(self.lasers)
+        duplicates = False
+        
         for l in laser_lines:
             
             start_point = np.array([l[0], l[1]])
-            laser_path.append(list(start_point))
-            laser_point = start_point
+            for elem in laser_path:
+                if np.array_equal(start_point, elem):
+                    duplicates = True
+                    break
+                else:
+                    duplicates = False                
+            if not duplicates:
+                laser_path.append(start_point)
+
+            # laser_point = start_point
             current_point = start_point
             previous_point = np.array([0, 0])
                         
-            while not previous_point.all == current_point.all:
+            while not np.array_equal(previous_point, current_point):
                 previous_point = current_point                
                 laser_point = current_point + np.array([l[2], l[3]])
                 if laser_point[0] <= x_bound and laser_point[0] >= 0 and laser_point[1] <= y_bound and laser_point[1] >= 0:
                     # Check if there any block on next move
                     pos = coord_trans(current_point, laser_point)
                     if self.grid[pos[0]][pos[1]] == 'o':
-                        laser_path.append(list(laser_point))
+                        for elem in laser_path:
+                            if np.array_equal(laser_point, elem):
+                                duplicates = True
+                                break
+                            else:
+                                duplicates = False                
+                        if not duplicates:
+                            laser_path.append(laser_point)
                         current_point = laser_point
+                    
                     # Change the direction of the laser
                     elif self.grid[pos[0]][pos[1]] == 'A':
                         if current_point[0] % 2 == 0:
                             laser_lines.append([current_point[0], current_point[1], -l[2], l[3]])
                         else: 
                             laser_lines.append([current_point[0], current_point[1], l[2], -l[3]])
+
+                    # Change the direction of the laser and add the refract laser                    
                     elif self.grid[pos[0]][pos[1]] == 'C':
                         # Refracted lazer
                         laser_lines.append([laser_point[0], laser_point[1], l[2], l[3]])
@@ -94,7 +134,6 @@ class BoardStatus():
                         break
                 else:
                     break               
-        laser_path = list(dict.fromkeys(laser_path))
         
         return laser_path
     

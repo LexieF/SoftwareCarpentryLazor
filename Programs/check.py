@@ -8,12 +8,15 @@ def check(board_status):
 	# if the beam meets all the required points, return True
 	# if not, return False and it goes back to the 
 	# expansion function 
-	check= []
+	check = []
 	path = board_status.laser_pathway()
 	for points in board_status.points:
+		marker = False
 		for x in path:
 			if all([x[i] == points[i] for i in range(len(x))]):
-				check.append(True)		
+				marker = True
+		check.append(marker)	
+
 	if all(check):
 		return True
 	else:

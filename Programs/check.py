@@ -23,6 +23,7 @@ def check(board_state):
 	# if not, return False and it goes back to the 
 	# expansion function 
 
-	for i in laser_pathway:
+for i in laser_pathway:
     if i = points:
     return True 
+

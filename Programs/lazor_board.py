@@ -10,11 +10,10 @@ This file defines three class:
     TreeNode
     GameTree
 """
-
 import numpy as np
 from copy import deepcopy
-
 import lazor_input
+
 
 class BoardStatus():
     """
@@ -32,8 +31,15 @@ class BoardStatus():
         self.blocks = deepcopy(blocks)
         self.points = deepcopy(points)
 
+    # def laser_pathway(self):
+    #     """
+    #     Function that provide the laser pathway
+    #     :return: *list*
+    #         list comprising all coordinates that laser would pass
+    #     """
+    #     def board2laser(position):
 
-        
+
     def laser_pathway(self):
         """
         A function calculate all the points that laser will pass through on the current status.
@@ -105,6 +111,11 @@ class BoardStatus():
                     pos = coord_trans(current_point, laser_point)
                     if self.grid[pos[0]][pos[1]] == 'o':
                         for elem in laser_path:
+                            # print 'laser_point:'
+                            # print laser_point
+                            # print ''
+                            # print 'elem:'
+                            # print elem
                             if np.array_equal(laser_point, elem):
                                 duplicates = True
                                 break
@@ -136,8 +147,7 @@ class BoardStatus():
                     break               
         
         return laser_path
-    
-     
+
     def put_block(self, block_pos, block_type):
         '''
         A function that put block on a specific position of the board.
@@ -149,21 +159,23 @@ class BoardStatus():
             block_type: *str*
                 One of three different types of block.
                 Possible value are 'A', 'B' or 'C'.
+                'A' -- reflect block
+                'B' -- opaque block
+                'C' -- refract block
                 
         **Returns**
         
             self.grid: *list*
                 A matrix describe the board.
             self.blocks: *dict*
-                The updated blocks set after puting block on board.
+                The updated blocks set after putting block on board.
         '''
         
         self.blocks[block_type] -= 1
         if self.blocks[block_type] == 0:
            del self.blocks[block_type] 
-        self.grid[block_pos[0]][block_pos[1]] = block_type
+        self.grid[block_pos[1]][block_pos[0]] = block_type # adjust by WG
         return self.grid, self.blocks
-            
     
     def delete_block(self, block_pos, block_type):
         '''
@@ -176,6 +188,9 @@ class BoardStatus():
             block_type: *str*
                 One of three different types of block.
                 Possible value are 'A', 'B' or 'C'.
+                'A' -- reflect block
+                'B' -- opaque block
+                'C' -- refract block
                 
         **Returns**
         
@@ -191,17 +206,40 @@ class BoardStatus():
         self.grid[block_pos[0]][block_pos[1]] = 'o'
         return self.grid, self.blocks
 
-        
-    
-class TreeNode():
-    def __init__(self, board_status):
-        self.board_status = board_status
+    def copy(self):
+        """
+        Make a copy of the board state
+        Add by WG
+        """
+        bs = BoardStatus(
+            self.grid,
+            self.lasers,
+            self.blocks,
+            self.points
+        )
+        return bs
 
-    
-class GameTree():
-    def __init__(self, init_status):
-        self.init_status = init_status
-        self.root = TreeNode(self.init_status)
+    def print_status(self):
+        """
+        Print the current board status
+        :return:
+        Add by WG
+        """
+        print 'Board Condition:'
+        for x in self.grid:
+            print x
+
+        print ''
+        print 'Laser Start Coordinate, Dirction:'
+        print self.lasers
+        print ''
+        print 'Blocks Remain:'
+        print self.blocks
+        print ''
+        print 'Destination Coordinates'
+        print self.points
+        return None
+
         
 if __name__ == '__main__':
     

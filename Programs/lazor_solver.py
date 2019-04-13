@@ -39,7 +39,7 @@ def square(a, b):
         if L[i][1] % 2 != 0:
             position.append((L[i][1] - 1)/2)
 
-    diff_original = a - b
+    diff_original = [(a[i] - b[i]) for i in range(len(a))]
     diff = [np.abs(x) == 1 for x in diff_original]
     if all(diff):
         return position
@@ -65,7 +65,7 @@ def lazor_path(board_status):
             b = path[j]
             if square(a, b):
                 position = square(a, b)
-                if board_status.grid[position[0]][position[1]] == 'o':
+                if board_status.grid[position[1]][position[0]] == 'o':
                     check.append(position)
     return check
 
@@ -149,38 +149,43 @@ class Node:
                 self.add_child(bs_, verbose=False)
         return None
 
-    def print_node(self, verbose=False):
+    def print_node(self, only=False, verbose=False):
         """
         Print out the information of node to check.
 
         :param verbose: *Boolean*
             if True, print out all children node
 
+        :param only: *Boolean*
+            if True, only print out current game board
+
         :return: None
         """
         print 'Node content:'
         self.board_status.print_status()
         print ''
-        print 'Node Status:'
-        if self.visit:
-            print 'Visited'
-        else:
-            print 'Unvisited'
 
-        print ''
+        if not only:
+            print 'Node Status:'
+            if self.visit:
+                print 'Visited'
+            else:
+                print 'Unvisited'
 
-        if self.father is None:
-            print 'No father Node for Root Node'
-        else:
-            print 'Father node content:'
-            self.father.board_status.print_status()
-        print ''
-        print 'Children number:'
-        print len(self.children)
-        print ''
-        print 'Unvisited Children number:'
-        uvc = self.unvisited_children()
-        print len(uvc)
+            print ''
+
+            if self.father is None:
+                print 'No father Node for Root Node'
+            else:
+                print 'Father node content:'
+                self.father.board_status.print_status()
+            print ''
+            print 'Children number:'
+            print len(self.children)
+            print ''
+            print 'Unvisited Children number:'
+            uvc = self.unvisited_children()
+            print len(uvc)
 
         if verbose:
             print 'Children content:'
@@ -217,23 +222,23 @@ class LazorSolver:
         Function that build a tree from a root node
         For each layer, apply expansion function to every nodes
         """
-        for i in range(self.max_depth):
+        for i in range(self.max_depth + 1):
             layer = self.tree[i]
             for node in layer:
-                node.print_node()
+                # node.print_node()
                 node.expansion()
-                print 'complete expansion'
+                # print 'complete expansion'
                 children = node.children
                 for child in children:
                     self.tree[i + 1].append(child)
-                    print 'Add a child node'
-
-                print 'Complete one node'
-                print ''
+            #         print 'Add a child node'
+            #
+            #     print 'Complete one node'
+            #     print ''
             print 'complete layer %i' % i
-            print 'The number of nodes in last layer is %i' % len(self.tree[i + 1])
-            print ''
-            print '----------------------------------------------------------------------------------------------'
+            if i < self.max_depth:
+                print 'The number of nodes in last layer is %i' % len(self.tree[i + 1])
+                print '----------------------------------------------------------------------------------------------'
             print ''
         return None
 
@@ -248,7 +253,15 @@ class LazorSolver:
         :return: *class BoardStatus*
             The solution to this problem
         """
-        pass
+        candidates = self.tree[-1]
+        solve = False
+        for node in candidates:
+            node.print_node()
+            if check_func(node.board_status):
+                return node
+
+        if not solve:
+            return None
 
     def print_tree(self):
         """
@@ -263,16 +276,18 @@ class LazorSolver:
 
 
 if __name__ == '__main__':
-    f = "mad_1"
+    f = "mad_4"
     filename = "../Lazor_board/{}.bff".format(f)
     grid, lasers, blocks, points = read_lazor_board(filename)
     bs = BoardStatus(grid, lasers, blocks, points)
 
-    bs2 = bs.copy()
-    bs2.put_block([1, 3], 'A')
-
     root = Node(bs)
-    root.add_child(bs2)
 
-    root.expansion()
-    print len(root.children)
+    solver = LazorSolver(root=root)
+    solver.build_tree()
+
+    solution = solver.solution()
+    if solution is None:
+        print 'No Solution found!'
+    else:
+        solution.print_node(only=True)

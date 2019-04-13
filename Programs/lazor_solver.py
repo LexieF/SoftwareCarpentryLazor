@@ -239,7 +239,11 @@ class LazorSolver:
             if i < self.max_depth:
                 print 'The number of nodes in last layer is %i' % len(self.tree[i + 1])
                 print '----------------------------------------------------------------------------------------------'
-            print ''
+                print ''
+
+        print 'Finish building the tree!'
+        print '----------------------------------------------------------------------------------------------'
+
         return None
 
     def solution(self, check_func=check):
@@ -254,14 +258,13 @@ class LazorSolver:
             The solution to this problem
         """
         candidates = self.tree[-1]
-        solve = False
+        solutions = []
         for node in candidates:
-            node.print_node()
+            #node.print_node()
             if check_func(node.board_status):
-                return node
+                solutions.append(node)
 
-        if not solve:
-            return None
+        return solutions
 
     def print_tree(self):
         """
@@ -276,7 +279,7 @@ class LazorSolver:
 
 
 if __name__ == '__main__':
-    f = "mad_4"
+    f = "mad_1"
     filename = "../Lazor_board/{}.bff".format(f)
     grid, lasers, blocks, points = read_lazor_board(filename)
     bs = BoardStatus(grid, lasers, blocks, points)
@@ -287,7 +290,9 @@ if __name__ == '__main__':
     solver.build_tree()
 
     solution = solver.solution()
-    if solution is None:
+
+    if len(solution) == 0:
         print 'No Solution found!'
     else:
-        solution.print_node(only=True)
+        for node in solution:
+            node.print_node(only=True)

@@ -34,7 +34,9 @@ def read_lazor_board(filename):
             i = 1
             while s:
                 temp_str = l[l_ind+i].split('\n')[0]
-                grid.append(temp_str.split('   '))
+                while "  " in temp_str:
+                    temp_str = temp_str.replace("  ", " ")
+                grid.append(temp_str.split(' '))
                 i += 1
                 if l[l_ind+i][0] == "G":
                     l_ind += i+1

@@ -103,19 +103,38 @@ class BoardStatus():
             """
             point = start_point
             direction = start_direction
-            b_dim = len(board) * 2
+
+            x_dim = len(board[0]) * 2
+            y_dim = len(board) * 2
+
+            # Add the first point
             if start_point.tolist() not in path:
                 path.append(start_point.tolist())
 
+            trace_len_path = [i for i in range(8)]
+
+            # Propagate the laser beam step by step
             while True:
+                # Check for if the path is converged
+                trace_len_path.append(len(path))
+                del trace_len_path[0]
+                if all([x == trace_len_path[-1] for x in trace_len_path]):
+                    break
+
+                # Check next laser point
                 next = point + direction
-                if next[0] == -1 or next[0] == b_dim + 1 or next[1] == -1 or next[1] == b_dim + 1:
+                if next[0] == -1 or next[0] == x_dim + 1 or next[1] == -1 or next[1] == y_dim + 1:
                     break
 
                 block_position_in_laser = square(point, next)
                 block_position_in_board = laser2board(block_position_in_laser)
 
+                # 'o' -- encounter nothing, propagate normally
                 if content(board, block_position_in_board) == 'o':
+                    point = next
+                    if point.tolist() not in path:
+                        path.append(point.tolist())
+                elif content(board, block_position_in_board) == 'x':
                     point = next
                     if point.tolist() not in path:
                         path.append(point.tolist())
@@ -124,19 +143,34 @@ class BoardStatus():
                     # Need to consider the former block
                     former = point - direction
 
-                    former_block_position_in_laser = square(point, former)
-                    former_block_position_in_board = laser2board(former_block_position_in_laser)
-
-                    if content(board, former_block_position_in_board) == 'o':
-                        direction = direction + 2 * (point - block_position_in_laser)
-
-                    elif content(board, former_block_position_in_board) == 'A':
+                    # Case: block is placed at the corner or edge
+                    if former[0] == -1 or former[0] == x_dim + 1 or former[1] == -1 or former[1] == y_dim + 1:
                         if point.tolist() not in path:
                             path.append(point.tolist())
                         break
+                    # Case: block is placed at medium
+                    else:
+                        former_block_position_in_laser = square(point, former)
+                        former_block_position_in_board = laser2board(former_block_position_in_laser)
 
-                    elif content(board, former_block_position_in_board) == 'C':
-                        direction = direction + 2 * (point - block_position_in_laser)
+                        if content(board, former_block_position_in_board) == 'o':
+                            direction = direction + 2 * (point - block_position_in_laser)
+
+                        elif content(board, former_block_position_in_board) == 'x':
+                            direction = direction + 2 * (point - block_position_in_laser)
+
+                        elif content(board, former_block_position_in_board) == 'A':
+                            if point.tolist() not in path:
+                                path.append(point.tolist())
+                            break
+
+                        elif content(board, former_block_position_in_board) == 'B':
+                            if point.tolist() not in path:
+                                path.append(point.tolist())
+                            break
+
+                        elif content(board, former_block_position_in_board) == 'C':
+                            direction = direction + 2 * (point - block_position_in_laser)
 
                 # 'B' -- opaque block
                 elif content(board, block_position_in_board) == 'B':
@@ -146,30 +180,49 @@ class BoardStatus():
                     # Need to consider the former block
                     former = point - direction
 
-                    former_block_position_in_laser = square(point, former)
-                    former_block_position_in_board = laser2board(former_block_position_in_laser)
-
-                    if content(board, former_block_position_in_board) == 'o':
-                        # Normal refraction and transmission case
-                        laser_propagate(
-                            point, direction + 2 * (point - block_position_in_laser), board, path=path
-                        )
-                        laser_propagate(next, direction, board, path=path)
-
-                    elif content(board, former_block_position_in_board) == 'A':
-                        # The incident light is from refraction of 'A' block
-                        # Only transmission should be considered
-                        laser_propagate(next, direction, board, path=path)
+                    if former[0] == -1 or former[0] == x_dim + 1 or former[1] == -1 or former[1] == y_dim + 1:
                         if point.tolist() not in path:
                             path.append(point.tolist())
-
-                    elif content(board, former_block_position_in_board) == 'C':
-                        # Imaginary case (No instance to verify)
-                        # The incident light is from refraction of 'A' block
-                        # Only transmission should be considered
                         laser_propagate(next, direction, board, path=path)
-                        if point.tolist() not in path:
-                            path.append(point.tolist())
+                    else:
+                        former_block_position_in_laser = square(point, former)
+                        former_block_position_in_board = laser2board(former_block_position_in_laser)
+
+                        if content(board, former_block_position_in_board) == 'o':
+                            # Normal refraction and transmission case
+                            laser_propagate(
+                                point, direction + 2 * (point - block_position_in_laser), board, path=path
+                            )
+                            laser_propagate(next, direction, board, path=path)
+
+                        elif content(board, former_block_position_in_board) == 'x':
+                            # Normal refraction and transmission case
+                            laser_propagate(
+                                point, direction + 2 * (point - block_position_in_laser), board, path=path
+                            )
+                            laser_propagate(next, direction, board, path=path)
+
+                        elif content(board, former_block_position_in_board) == 'A':
+                            # The incident light is from refraction of 'A' block
+                            # Only transmission should be considered
+                            laser_propagate(next, direction, board, path=path)
+                            if point.tolist() not in path:
+                                path.append(point.tolist())
+
+                        elif content(board, former_block_position_in_board) == 'B':
+                            # Normal refraction and transmission case
+                            laser_propagate(
+                                point, direction + 2 * (point - block_position_in_laser), board, path=path
+                            )
+                            laser_propagate(next, direction, board, path=path)
+
+                        elif content(board, former_block_position_in_board) == 'C':
+                            # Imaginary case (No instance to verify)
+                            # The incident light is from refraction of 'A' block
+                            # Only transmission should be considered
+                            laser_propagate(next, direction, board, path=path)
+                            if point.tolist() not in path:
+                                path.append(point.tolist())
 
                     break
 

@@ -14,6 +14,7 @@ from lazor_board import *
 from check import check
 import numpy as np
 import random
+import time
 
 
 def square(a, b):
@@ -67,6 +68,29 @@ def lazor_path(board_status):
                 position = square(a, b)
                 if board_status.grid[position[1]][position[0]] == 'o':
                     check.append(position)
+    return check
+
+
+def non_lazor_path(board_status):
+    """
+    Return all positions that not on the lazor pathway
+    Help function to generate children
+
+    :param board_state: *class BoardStatus*
+        the board status that want to analyse
+
+    :return: *list* with content *position list*
+        list of position one can place a block
+    """
+    check = []
+    x_dim = len(board_status.grid[0])
+    y_dim = len(board_status.grid)
+
+    for i in range(x_dim):
+        for j in range(y_dim):
+            position = [i, j]
+            if board_status.grid[position[1]][position[0]] == 'o':
+                check.append(position)
     return check
 
 
@@ -139,9 +163,23 @@ class Node:
     def expansion(self):
         """
         Construct all possible children node of this node
+        On laser path
         """
         bs = self.board_status
         path = lazor_path(bs)
+        for block in bs.blocks.keys():
+            for position in path:
+                bs_ = bs.copy()
+                bs_.put_block(position, block)
+                self.add_child(bs_, verbose=False)
+        return None
+
+    def non_laser_path_expansion(self):
+        """
+        Construct all possible node of this node
+        """
+        bs = self.board_status
+        path = non_lazor_path(bs)
         for block in bs.blocks.keys():
             for position in path:
                 bs_ = bs.copy()
@@ -225,7 +263,9 @@ class LazorSolver:
         for i in range(self.max_depth + 1):
             layer = self.tree[i]
             for node in layer:
-                # node.print_node()
+                # for q in node.board_status.grid:
+                #     print q
+                # print node.board_status.laser_pathway()
                 node.expansion()
                 # print 'complete expansion'
                 children = node.children
@@ -262,7 +302,38 @@ class LazorSolver:
         for node in candidates:
             #node.print_node()
             if check_func(node.board_status):
-                solutions.append(node)
+                solution_grids = [node_.board_status.grid for node_ in solutions]
+                if node.board_status.grid not in solution_grids:
+                    solutions.append(node)
+
+        # If no solution found, there is blocks that block the laser beam, which is redundant
+        # Back propagate from bottom and found a subset that can win the game
+        # Then use non_laser_beam_expansion to the node
+        marker = 1
+        while True:
+            if len(solutions) != 0:
+                break
+
+            marker += 1
+            for node in self.tree[-marker]:
+                node.non_laser_path_expansion()
+                for child in node.children:
+                    if check_func(child.board_status):
+                        solution_grids = [node_.board_status.grid for node_ in solutions]
+                        if child.board_status.grid not in solution_grids:
+                            solutions.append(child)
+
+        # expansion from pre-solution
+        temp = []
+        for i in range(marker - 2):
+            for node in solutions:
+                node.non_laser_path_expansion()
+                for child in node.children:
+                    if check_func(child.board_status):
+                        temp_grids = [node_.board_status.grid for node_ in temp]
+                        if child.board_status.grid not in temp_grids:
+                            temp.append(child)
+            solutions = temp
 
         return solutions
 
@@ -279,20 +350,31 @@ class LazorSolver:
 
 
 if __name__ == '__main__':
-    f = "mad_1"
+
+    time1 = time.time()
+
+    f = "yarn_5"
+    # f = "test"
     filename = "../Lazor_board/{}.bff".format(f)
     grid, lasers, blocks, points = read_lazor_board(filename)
     bs = BoardStatus(grid, lasers, blocks, points)
 
     root = Node(bs)
+    root.print_node()
 
     solver = LazorSolver(root=root)
     solver.build_tree()
 
     solution = solver.solution()
 
+    time2 = time.time()
+    dt = time2 - time1
+
     if len(solution) == 0:
         print 'No Solution found!'
     else:
         for node in solution:
             node.print_node(only=True)
+            print '----------------------------------------------------------------------------------------------'
+
+    print 'Total time consumed: %.1f' % dt

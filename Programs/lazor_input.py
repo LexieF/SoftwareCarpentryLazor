@@ -10,7 +10,14 @@ Created on Tue Mar 26 22:14:27 2019
 
 def read_lazor_board(filename):
     """
+    Given a lazor board, this function reads the file
+    to determine how the board is set up.
+
+    ***Input*** 
+    filename = file, .biff 
     
+    ***Output***
+    grid, laser, blocks, points = lists 
     """
     f = open(filename)
     l = f.readlines()

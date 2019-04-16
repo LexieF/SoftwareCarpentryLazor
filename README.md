@@ -19,7 +19,8 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
 ----PROGRAMS----
 
 (1) lazor_input.py
-   Functions:
+
+  Functions:
     
     (i) read_lazor_board - takes a file and returns the grid, laser, blocks, and points as a list 
 
@@ -42,11 +43,13 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
     (ix) copy - adds a copy of the board state 
     
 (3) check.py 
-    Functions:
+
+   Functions:
     
     (i) check - check the beam of the laser, if the required point is at the end of the laser
     
 (4) lazor_solver.py 
+
    Classes:
     
     (i) LazorSolver - class that gives the solution, root is the start of the board

@@ -58,10 +58,10 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
     
   ---HOW TO RUN---
   
-  You can run the program either by running the lazor_solver.py file or with this code:
+ You can run the program either by running the lazor_solver.py file or with this code:
   
   
-  if __name__ == '__main__':
+    if __name__ == '__main__':
   
     f = "mad_1"
     filename = "../Lazor_board/{}.bff".format(f)

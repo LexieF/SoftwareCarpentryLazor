@@ -60,7 +60,9 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
   
   You can run the program either by running the lazor_solver.py file or with this code:
   
+  
   if __name__ == '__main__':
+  
     f = "mad_1"
     filename = "../Lazor_board/{}.bff".format(f)
     grid, lasers, blocks, points = read_lazor_board(filename)

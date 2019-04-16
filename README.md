@@ -24,6 +24,7 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
     (i) read_lazor_board - takes a file and returns the grid, laser, blocks, and points as a list 
 
 (2) lazor_board.py
+    
    Classes:
     
     (i) BoardStatus - describes the status of the game board
@@ -50,7 +51,8 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
     
     (i) LazorSolver - class that gives the solution, root is the start of the board
     (ii) Node - represents each node in the game tree 
-   Function:
+    
+   Functions:
    
     (i) square - checks if there are two laser points on one block
     (ii) lazor_path - all positions in lazor path

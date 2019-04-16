@@ -19,13 +19,17 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
 ----PROGRAMS----
 
 (1) lazor_input.py
-    Functions:
+   Functions:
+    
     (i) read_lazor_board - takes a file and returns the grid, laser, blocks, and points as a list 
 
 (2) lazor_board.py
-    Classes:
+   Classes:
+    
     (i) BoardStatus - describes the status of the game board
-    Functions:
+    
+   Functions:
+    
     (i) laser_pathway - finds the points the laser passes through
     (ii) board2laser - transforms coordinates from the board grid to the laser grid
     (iii) laser2board - transforms coordinates from the laser grid to the board grid
@@ -38,13 +42,16 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
     
 (3) check.py 
     Functions:
+    
     (i) check - check the beam of the laser, if the required point is at the end of the laser
     
 (4) lazor_solver.py 
-    Classes:
+   Classes:
+    
     (i) LazorSolver - class that gives the solution, root is the start of the board
     (ii) Node - represents each node in the game tree 
-    Function:
+   Function:
+   
     (i) square - checks if there are two laser points on one block
     (ii) lazor_path - all positions in lazor path
     (iii) add_child - add a child to the current node (who becomes the father node) 
@@ -63,23 +70,23 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
   
     if __name__ == '__main__':
   
-    f = "mad_1"
-    filename = "../Lazor_board/{}.bff".format(f)
-    grid, lasers, blocks, points = read_lazor_board(filename)
-    bs = BoardStatus(grid, lasers, blocks, points)
+        f = "mad_1"
+        filename = "../Lazor_board/{}.bff".format(f)
+        grid, lasers, blocks, points = read_lazor_board(filename)
+        bs = BoardStatus(grid, lasers, blocks, points)
 
-    root = Node(bs)
+        root = Node(bs)
 
-    solver = LazorSolver(root=root)
-    solver.build_tree()
+        solver = LazorSolver(root=root)
+        solver.build_tree()
 
-    solution = solver.solution()
+        solution = solver.solution()
 
-    if len(solution) == 0:
-        print 'No Solution found!'
-    else:
-        for node in solution:
-            node.print_node(only=True)
+        if len(solution) == 0:
+            print 'No Solution found!'
+        else:
+            for node in solution:
+                node.print_node(only=True)
 
 
 

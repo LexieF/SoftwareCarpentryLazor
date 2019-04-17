@@ -98,7 +98,7 @@ The code should be tested in Python 2.7
 
   | **Function** | **Discription** | **Input** | **Outputs** |
   | ------------ | --------------- | --------- | ----------- |
-  | lazor_board_solution_output | Write output files | f_name | None |
+  | lazor_board_solution_output | write output files | f_name | None |
 
     
 ## HOW TO RUN

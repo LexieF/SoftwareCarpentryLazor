@@ -2,39 +2,40 @@
 
 A code that will automatically find solutions to the \Lazor" game on Android and iPhone..
 
-## Author: Joan Golding, Wenhao Gao, Wenye Deng, Yuchun Wang
+## Author
+
+Joan Golding, Wenhao Gao, Wenye Deng, Yuchun Wang
 
 ## Hierarchy of Directory
 
 This repository contains 3 directory, a PDF handout for Lazor project and a README file.
 
 1. Lazor_board
-  - This directory contains all the given data file
+  - This directory contains all the given .biff files
 2. Programs
-  - This directory has 5 python file: lazor_input.py, lazor_board.py, check.py, lazor_solver.py, and lazor_output.py
+  - This directory has 5 .py file: lazor_input.py, lazor_board.py, check.py, lazor_solver.py, and lazor_output.py
   - And details about this file will be explained below
 3. Outputs
   - This directory contains 8 outputs file with solution corresponding to the 8 given data file
 
-
+## Getting Start
 
 The input is a Lazor board with several types of blocks. To solve a level of the game, the lazor must pass through certain points and you can do this with reflective/refractive blocks. 
+To solve we use Depth First Search and the Monte Carlo Method (MCM).
 
-The Lazor Boards can be used to test the code in Python 2.7. 
-The lazor boards are under the folder lazor_board as .biff files. 
+### Prerequisites
 
+The code should be tested in Python 2.7
 
-To solve we use Depth First Search and the Monte Carlo Method (MCM). 
+### PROGRAMS
 
-----PROGRAMS----
-
-(1) lazor_input.py
+1. lazor_input.py
 
   Functions:
     
     (i) read_lazor_board - takes a file and returns the grid, laser, blocks, and points as a list 
 
-(2) lazor_board.py
+2. lazor_board.py
     
    Classes:
     
@@ -52,13 +53,13 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
     (viii) delete_block - deletes a block at a specific position on the board
     (ix) copy - adds a copy of the board state 
     
-(3) check.py 
+3. check.py 
 
    Functions:
     
     (i) check - check the beam of the laser, if the required point is at the end of the laser
     
-(4) lazor_solver.py 
+4. lazor_solver.py 
 
    Classes:
     
@@ -78,36 +79,10 @@ To solve we use Depth First Search and the Monte Carlo Method (MCM).
     (ix) solution - finds solution with Depth First Search 
     (x) print_tree - help function to visualize tree structure 
     
-  ---HOW TO RUN---
+5. lazor_output.py
+    
+## HOW TO RUN
   
- You can run the program either by running the lazor_solver.py file or with this code:
-  
-  
-    if __name__ == '__main__':
-  
-        f = "mad_1"
-        filename = "../Lazor_board/{}.bff".format(f)
-        grid, lasers, blocks, points = read_lazor_board(filename)
-        bs = BoardStatus(grid, lasers, blocks, points)
-
-        root = Node(bs)
-
-        solver = LazorSolver(root=root)
-        solver.build_tree()
-
-        solution = solver.solution()
-
-        if len(solution) == 0:
-            print 'No Solution found!'
-        else:
-            for node in solution:
-                node.print_node(only=True)
-
-
-
-
-
-
-
-
-
+ You can run the program either by running the lazor_solver.py file
+ 
+ Or write out the solution into a text file

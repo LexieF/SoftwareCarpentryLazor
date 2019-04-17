@@ -1,6 +1,6 @@
 # Group Project - Lazor
 
-A code that will automatically find solutions to the \Lazor" game on Android and iPhone..
+A code that will automatically find solutions to the "Lazor" game on Android and iPhone..
 
 ## Author
 
@@ -31,10 +31,10 @@ The code should be tested in Python 2.7
 
 1. lazor_input.py
 
-| **Function** | **Discription** | **Input** | **Outputs** |
-| ------------ | --------------- | --------- | ----------- |
-| read_lazor_board | read the bff file | filename | grid, lasers, blocks, points |
-| test_read_lazor_board | check the result of read_lazor_board | None | None |
+  | **Function** | **Discription** | **Input** | **Outputs** |
+  | ------------ | --------------- | --------- | ----------- |
+  | read_lazor_board | read the bff file | filename | grid, lasers, blocks, points |
+  | test_read_lazor_board | check the result of read_lazor_board | None | None |
 
 2. lazor_board.py
     
@@ -59,9 +59,9 @@ The code should be tested in Python 2.7
     
 3. check.py 
 
-   Functions:
-    
-    (i) check - check the beam of the laser, if the required point is at the end of the laser
+  | **Function** | **Discription** | **Input** | **Outputs** |
+  | ------------ | --------------- | --------- | ----------- |
+  | check | check the beam of the lazor | instance of BoardStatus class | boolean data type |
     
 4. lazor_solver.py 
 
@@ -84,6 +84,11 @@ The code should be tested in Python 2.7
     (x) print_tree - help function to visualize tree structure 
     
 5. lazor_output.py
+
+  | **Function** | **Discription** | **Input** | **Outputs** |
+  | ------------ | --------------- | --------- | ----------- |
+  | lazor_board_solution_output | Write output files | f_name | None |
+
     
 ## HOW TO RUN
   

@@ -17,13 +17,13 @@ from lazor_input import *
 class BoardStatus():
     """
     A class describe the status of the game board.
-    
+
     **Method**
-    
+
         laser_pathway(self)
         put_block(self, block_pos, block_type)
         delete_block(self, block_pos, block_type)
-        print_status(self)
+        copy(self)
         print_status(self)
     """
     def __init__(self, grid, lasers, blocks, points):
@@ -37,23 +37,23 @@ class BoardStatus():
         Function that provide the laser pathway
 
         **Return**
-            
+
             path: *list, list, int*
                 List comprising all coordinates that laser would pass
-        
+
         Add by WG
         """
         def board2laser(position):
             """
             Help function that transform the coordinates in board grid to laser grid
-            
+
             **Parameters**
-            
+
                 position: *list, int*
                     Position in board grid
-            
+
             **return**
-                
+
                 position: *list, int*
                     Position in laser grid
             """
@@ -65,9 +65,9 @@ class BoardStatus():
         def laser2board(position):
             """
             Help function that transform the coordinates in laser grid to board grid
-            
+
             **Parameters**
-                
+
                 position: *list, int*
                     Position in laser grid
             **Return**
@@ -85,7 +85,7 @@ class BoardStatus():
             Help generate legal path
 
             **Parameters**
-                
+
                 a: *list, int*
                 Lazor point 1
                 b: *list, int*
@@ -116,16 +116,16 @@ class BoardStatus():
         def laser_propagate(start_point, start_direction, board, path=[]):
             """
             Function that propagate a laser beam
-            
+
             **Parameters**
-            
+
                 start_point: *list, int*
                 start_direction: *list, int*
                 board: *list, list, str*
                 path: *list, list, int, optional*
-                
+
             **Returns**
-            
+
                 path: *list, list, path*
             """
             point = start_point
@@ -272,9 +272,9 @@ class BoardStatus():
     def put_block(self, block_pos, block_type):
         '''
         A function that put block on a specific position of the board.
-        
+
         **Parameters**
-        
+
             block_pos: *list, int*
                 The position on the board want to put block.
             block_type: *str*
@@ -283,26 +283,26 @@ class BoardStatus():
                 'A' -- reflect block
                 'B' -- opaque block
                 'C' -- refract block
-                
+
         **Returns**
-        
+
             self.grid: *list*
                 A matrix describe the board.
             self.blocks: *dict*
                 The updated blocks set after putting block on board.
-        '''        
+        '''
         self.blocks[block_type] -= 1
         if self.blocks[block_type] == 0:
-           del self.blocks[block_type] 
+           del self.blocks[block_type]
         self.grid[block_pos[1]][block_pos[0]] = block_type # adjust by WG
         return self.grid, self.blocks
-    
+
     def delete_block(self, block_pos, block_type):
         '''
         A function that delete block on a specific position of the board.
-        
+
         **Parameters**
-        
+
             block_pos: *list, int*
                 The position on the board want to delete block.
             block_type: *str*
@@ -311,9 +311,9 @@ class BoardStatus():
                 'A' -- reflect block
                 'B' -- opaque block
                 'C' -- refract block
-                
+
         **Returns**
-        
+
             self.grid: *list*
                 A matrix describe the board.
             self.blocks: *dict*
@@ -329,7 +329,7 @@ class BoardStatus():
     def copy(self):
         """
         Make a copy of the board state
-        
+
         Add by WG
         """
         bs = BoardStatus(
@@ -343,7 +343,7 @@ class BoardStatus():
     def print_status(self):
         """
         Print the current board status
-        
+
         Add by WG
         """
         print 'Board Condition:'
@@ -364,22 +364,22 @@ class BoardStatus():
 def test_bs():
     filename = "../Lazor_board/showstopper_4.bff"
     grid, lasers, blocks, points = read_lazor_board(filename)
-    bs = BoardStatus(grid, lasers, blocks, points)    
+    bs = BoardStatus(grid, lasers, blocks, points)
     assert bs.laser_pathway() == [[3, 6], [2, 5], [1, 4], [0, 3]], "Method laser_pathway() is incorrect"
 
     bs.put_block([2, 2], "A")
     assert bs.grid == [['B', 'o', 'o'], ['o', 'o', 'o'], ['o', 'o', 'A']], "Blocks didn't put in the right place"
     assert bs.blocks == {'A': 2, 'B': 3}, "Blocks set should be recounted"
-    
+
     bs.delete_block([2, 2], "A")
     assert bs.grid == [['B', 'o', 'o'], ['o', 'o', 'o'], ['o', 'o', 'o']], "Blocks didn't delete right"
     assert bs.blocks == {'A': 3, 'B': 3}, "Blocks set should be recounted"
 
-        
+
 if __name__ == '__main__':
     test_bs()
     print "Everything passed"
-    
+
     # Test code for BoardStatus class
     filename_list = ["dark_1", "mad_1", "mad_4", "mad_7", "numbered_6", "showstopper_4", "tiny_5", "yarn_5"]
     for f in filename_list:

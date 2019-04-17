@@ -33,11 +33,12 @@ def check(board_status):
 
 
 if __name__ == "__main__":
-	f = "test"
-	filename = "../Lazor_board/{}.bff".format(f)
-	grid, lasers, blocks, points = read_lazor_board(filename) 
-	board_status = BoardStatus(grid, lasers, blocks, points)
-	print check(board_status)
+    filename_list = ["dark_1", "mad_1", "mad_4", "mad_7", "numbered_6", "showstopper_4", "tiny_5", "yarn_5"]
+    for f in filename_list:
+    	filename = "../Lazor_board/{}.bff".format(f)
+    	grid, lasers, blocks, points = read_lazor_board(filename) 
+    	board_status = BoardStatus(grid, lasers, blocks, points)
+    	print check(board_status)
 	
 
 

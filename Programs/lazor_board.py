@@ -23,7 +23,7 @@ class BoardStatus():
         laser_pathway(self)
         put_block(self, block_pos, block_type)
         delete_block(self, block_pos, block_type)
-        print_status(self)
+        copy(self)
         print_status(self)
     """
     def __init__(self, grid, lasers, blocks, points):

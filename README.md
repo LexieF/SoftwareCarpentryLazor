@@ -67,7 +67,7 @@ The code should be tested in Python 2.7
 
    Classes:
     
-   (i) Node - represents each node in the game tree
+    (i) Node - represents each node in the game tree
    
   | **Method** | **Discription** | **Input** | **Outputs** |
   | ---------- | --------------- | --------- | ----------- |
@@ -78,7 +78,7 @@ The code should be tested in Python 2.7
   | non_laser_path_expansion | construct all possible node of this node | self | None |
   | print_node | prints the node | self, only=False, verbose=False | None |
 
-   (ii) LazorSolver - class that gives the solution, root is the start of the board
+    (ii) LazorSolver - class that gives the solution, root is the start of the board
    
   | **Method** | **Discription** | **Input** | **Outputs** |
   | ---------- | --------------- | --------- | ----------- |
@@ -86,7 +86,7 @@ The code should be tested in Python 2.7
   | solution | finds solution with Depth First Search | self, check_func=check | solved instance of BoardStatus class |
   | print_tree | help function to visualize tree structure | self | None |
     
-   Functions:
+    Functions:
    
   | **Function** | **Discription** | **Input** | **Outputs** |
   | ------------ | --------------- | --------- | ----------- |
@@ -103,6 +103,32 @@ The code should be tested in Python 2.7
     
 ## HOW TO RUN
   
- You can run the program either by running the lazor_solver.py file
+ 1. You can got the solutions directly by running the lazor_solver.py file in command line
  
- Or write out the solution into a text file
+  - For all given files
+ 
+   ```
+   python lazor_solver.py
+   ```
+ 
+  - For other new files (please put the date file on the Laser_board directory before running the code)
+  
+    ```python
+    import lazor_solver
+    lazor_solver.lazor_run("mad_1")
+    ```
+    
+ 2. Or write out the solution into a text file
+ 
+  - For all given files together
+  
+    ```
+    python lazor_output.py
+    ```
+    
+  - For other new files (please put the date file on the Laser_board directory before running the code)
+  
+    ```python
+    import lazor_output
+    lazor_output.lazor_board_solution_output("mad_1")
+    ```

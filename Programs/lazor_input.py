@@ -13,7 +13,7 @@ Created on Tue Mar 26 22:14:27 2019
 
 def read_lazor_board(filename):
     """
-    This is a input function to read the bff file
+    This is an input function to read the bff file
     which contains the information of grid, lasers, blocks and points
 
     **Parameters**
@@ -84,7 +84,7 @@ def read_lazor_board(filename):
 
 def test_read_lazor_board():
     """
-    This is a unit test function to check the result of read_lazor_board(filename)
+    This is an unit test function to check the result of read_lazor_board(filename)
     """
     assert read_lazor_board("../Lazor_board/mad_1.bff")[0] == [['o', 'o', 'o', 'o'], ['o', 'o', 'o', 'o'], ['o', 'o', 'o', 'o'], ['o', 'o', 'o', 'o']], "Grid read is incorrect"
     assert read_lazor_board("../Lazor_board/mad_1.bff")[1] == [[2, 7, 1, -1]], "Lasers reading is incorrect"

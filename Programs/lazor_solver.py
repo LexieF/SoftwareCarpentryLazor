@@ -7,7 +7,7 @@ This file defines three class:
 
 Created on Tue Apr 9 2019
 
-@author: Wenhao Gao, Joan Golding
+@author: Wenhao Gao, Joan Golding, Wenye Deng
 
 """
 from lazor_input import *

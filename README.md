@@ -11,12 +11,12 @@ Joan Golding, Wenhao Gao, Wenye Deng, Yuchun Wang
 This repository contains 3 directory, a PDF handout for Lazor project and a README file.
 
 1. Lazor_board
-  - This directory contains all the given .biff files
+    - This directory contains all the given .biff files
 2. Programs
-  - This directory has 5 .py file: lazor_input.py, lazor_board.py, check.py, lazor_solver.py, and lazor_output.py
-  - And details about this file will be explained below
+    - This directory has 5 .py file: lazor_input.py, lazor_board.py, check.py, lazor_solver.py, and lazor_output.py
+    - And details about this file will be explained below
 3. Outputs
-  - This directory contains 8 outputs file with solution corresponding to the 8 given data file
+    - This directory contains 8 outputs file with solution corresponding to the 8 given data file
 
 ## Getting Start
 
@@ -105,13 +105,13 @@ The code should be tested in Python 2.7
   
  1. You can got the solutions directly by running the lazor_solver.py file
  
-  - For all given files (on command line)
+    - For all given files (on command line)
  
-   ```
-   python lazor_solver.py
-   ```
+    ```
+    python lazor_solver.py
+    ```
  
-  - For other new files, on any python console (please put the date file on the Laser_board directory before running the code)
+    - For other new files, on any python console (please put the date file on the Laser_board directory before running the code)
   
     ```python
     import lazor_solver
@@ -120,13 +120,13 @@ The code should be tested in Python 2.7
     
  2. Or write out the solution into a text file
  
-  - For all given files together (on command line)
+    - For all given files together (on command line)
   
     ```
     python lazor_output.py
     ```
     
-  - For other new files, on any python console (please put the date file on the Laser_board directory before running the code)
+    - For other new files, on any python console (please put the date file on the Laser_board directory before running the code)
   
     ```python
     import lazor_output

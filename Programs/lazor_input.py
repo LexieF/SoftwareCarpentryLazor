@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This file contains two functions: read_lazor_board(filename) 
+This file contains two functions: read_lazor_board(filename)
 and its related unit test function test_read_lazor_board()
 
 Created on Tue Mar 26 22:14:27 2019
@@ -15,21 +15,37 @@ def read_lazor_board(filename):
     """
     This is a input function to read the bff file
     which contains the information of grid, lasers, blocks and points
+
+    **Parameters**
+
+        filename: *str*
+            The filename of the bff files(Including the path)
+
+    **Returns**
+        grid: *list, list, str*
+            The grid of game board
+        lasers: *list, list, int*
+            The start points of the lasers and their directions
+        blocks: *dict, str(key), int*
+            The different kinds of blocks: (reflect, opaque, and refract) and its number
+        points: *list, list, int*
+            The points lasers must pass through
+
     """
     f = open(filename)
     l = f.readlines()
     f.close()
-    
+
     l_ind = 0
-    
+
     grid = []
     lasers = []
     blocks = {}
     points = []
-    
-    while l_ind < len(l):        
+
+    while l_ind < len(l):
         # Read grid
-        if l[l_ind][0] == "G":    
+        if l[l_ind][0] == "G":
             s = True # s means Grid Start or Stop
             i = 1
             while s:
@@ -48,22 +64,22 @@ def read_lazor_board(filename):
             temp_str = l[l_ind].split('\n')[0]
             blocks[temp_str.split(' ')[0]] = int(temp_str.split(' ')[1])
             l_ind += 1
-        
+
         # Read lasers
         elif l[l_ind][0] == "L":
             temp_str = l[l_ind].split('\n')[0]
             lasers.append(map(int, temp_str.split(' ')[1:5]))
             l_ind += 1
-        
+
         # Read points
         elif l[l_ind][0] == "P":
             temp_str = l[l_ind].split('\n')[0]
             points.append(map(int, temp_str.split(' ')[1:3]))
             l_ind += 1
-        
+
         else:
             l_ind += 1
-            
+
     return grid, lasers, blocks, points
 
 def test_read_lazor_board():
@@ -80,7 +96,7 @@ if __name__ == "__main__":
     # Unit test
     test_read_lazor_board()
     print "Everything passed"
-    
+
     # Print all info of the given files
     filename_list = ["dark_1", "mad_1", "mad_4", "mad_7", "numbered_6", "showstopper_4", "tiny_5", "yarn_5"]
     for f in filename_list:

@@ -31,9 +31,14 @@ The code should be tested in Python 2.7
 
 1. lazor_input.py
 
+| **Function** | **Discription** | **Input** | **Outputs** |
+| ------------ | --------------- | --------- | ----------- |
+| read_lazor_board | read the bff file | filename | grid, lasers, blocks, points |
+| test_read_lazor_board | check the result of read_lazor_board | None | None |
+
   Functions:
     
-    (i) read_lazor_board - takes a file and returns the grid, laser, blocks, and points as a list 
+    (i) read_lazor_board -  
 
 2. lazor_board.py
     

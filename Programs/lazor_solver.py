@@ -1,19 +1,19 @@
-#!/bin/python
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 """
+This file defines three class:
+    LazorSolver(Root_Node): Class that provide the solution
+    Node and some help functions
+
 Created on Tue Apr 9 2019
 
 @author: Wenhao Gao, Joan Golding
 
-This file defines three class:
-    LazorSolver(Root_Node): Class that provide the solution
-    Node
-    and some help functions
 """
 from lazor_input import *
 from lazor_board import *
 from check import check
 import numpy as np
-import random
 import time
 
 
@@ -350,31 +350,32 @@ class LazorSolver:
 
 
 if __name__ == '__main__':
+    filename_list = ["dark_1", "mad_1", "mad_4", "mad_7", "numbered_6", "showstopper_4", "tiny_5", "yarn_5"]
+    for f in filename_list:
+        
+        time1 = time.time()
+        
+        filename = "../Lazor_board/{}.bff".format(f)
+        grid, lasers, blocks, points = read_lazor_board(filename)
+        bs = BoardStatus(grid, lasers, blocks, points)
 
-    time1 = time.time()
-
-    f = "yarn_5"
-    # f = "test"
-    filename = "../Lazor_board/{}.bff".format(f)
-    grid, lasers, blocks, points = read_lazor_board(filename)
-    bs = BoardStatus(grid, lasers, blocks, points)
-
-    root = Node(bs)
-    root.print_node()
-
-    solver = LazorSolver(root=root)
-    solver.build_tree()
-
-    solution = solver.solution()
-
-    time2 = time.time()
-    dt = time2 - time1
-
-    if len(solution) == 0:
-        print 'No Solution found!'
-    else:
-        for node in solution:
-            node.print_node(only=True)
-            print '----------------------------------------------------------------------------------------------'
-
-    print 'Total time consumed: %.1f' % dt
+        print "{}:".format(f)
+        
+        root = Node(bs)
+        root.print_node()
+    
+        solver = LazorSolver(root=root)
+        solver.build_tree()    
+        solution = solver.solution()
+    
+        time2 = time.time()
+        dt = time2 - time1
+    
+        if len(solution) == 0:
+            print 'No Solution found!'
+        else:
+            for node in solution:
+                node.print_node(only=True)
+                print '----------------------------------------------------------------------------------------------'
+    
+        print 'Total time consumed: %.1f\n' % dt

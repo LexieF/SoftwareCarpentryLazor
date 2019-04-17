@@ -1,0 +1,7 @@
+The showstopper_4 file has 1 solution(s)
+
+Solution 1
+B A B
+B o A
+A o B
+

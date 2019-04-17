@@ -1,0 +1,9 @@
+The numbered_6 file has 1 solution(s)
+
+Solution 1
+B o o
+A x x
+B o A
+A x o
+B o o
+

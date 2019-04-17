@@ -1,0 +1,7 @@
+The dark_1 file has 1 solution(s)
+
+Solution 1
+x o o
+o B o
+B B x
+

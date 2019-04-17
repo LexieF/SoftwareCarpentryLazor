@@ -1,0 +1,7 @@
+The tiny_5 file has 1 solution(s)
+
+Solution 1
+A B A
+o o o
+A C o
+

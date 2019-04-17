@@ -1,0 +1,8 @@
+The mad_1 file has 1 solution(s)
+
+Solution 1
+o o C o
+o o o A
+A o o o
+o o o o
+

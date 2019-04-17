@@ -18,7 +18,7 @@ This repository contains 3 directory, a PDF handout for Lazor project and a READ
 3. Outputs
     - This directory contains 8 outputs file with solution corresponding to the 8 given data file
 
-## Getting Start
+## Getting Started
 
 The input is a Lazor board with several types of blocks. To solve a level of the game, the lazor must pass through certain points and you can do this with reflective/refractive blocks. 
 To solve we use Depth First Search and the Monte Carlo Method (MCM).
@@ -38,9 +38,9 @@ The code should be tested in Python 2.7
 
 2. lazor_board.py
     
-   Classes:
+  - Classes:
    
-   BoardStatus - describes the status of the game board
+    BoardStatus - describes the status of the game board
     
   | **Method** | **Discription** | **Input** | **Outputs** |
   | ---------- | --------------- | --------- | ----------- |
@@ -50,7 +50,7 @@ The code should be tested in Python 2.7
   | copy | adds a copy of the board state | self | instance of BoardStatus class |
   | print_status | print the current board status | self | None |
 
-   Functions:
+   - Functions:
     
   | **Function** | **Discription** | **Input** | **Outputs** |
   | ------------ | --------------- | --------- | ----------- |
@@ -65,9 +65,9 @@ The code should be tested in Python 2.7
     
 4. lazor_solver.py 
 
-   Classes:
+  - Classes:
     
-    (i) Node - represents each node in the game tree
+   (i) Node - represents each node in the game tree
    
   | **Method** | **Discription** | **Input** | **Outputs** |
   | ---------- | --------------- | --------- | ----------- |
@@ -78,7 +78,7 @@ The code should be tested in Python 2.7
   | non_laser_path_expansion | construct all possible node of this node | self | None |
   | print_node | prints the node | self, only=False, verbose=False | None |
 
-    (ii) LazorSolver - class that gives the solution, root is the start of the board
+   (ii) LazorSolver - class that gives the solution, root is the start of the board
    
   | **Method** | **Discription** | **Input** | **Outputs** |
   | ---------- | --------------- | --------- | ----------- |
@@ -86,7 +86,7 @@ The code should be tested in Python 2.7
   | solution | finds solution with Depth First Search | self, check_func=check | solved instance of BoardStatus class |
   | print_tree | help function to visualize tree structure | self | None |
     
-    Functions:
+   - Functions:
    
   | **Function** | **Discription** | **Input** | **Outputs** |
   | ------------ | --------------- | --------- | ----------- |

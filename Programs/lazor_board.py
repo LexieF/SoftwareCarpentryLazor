@@ -1,14 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
+This file defines the class BoardStatus(grid, lasers, blocks, points)
+which describes a certain status of the game.
+
 Created on Thu Mar 28 23:41:11 2019
 
-@author: Wenye Deng, Yuchun Wang
+@author: Wenye Deng, Yuchun Wang, Wenhao Gao
 
-This file defines three class:
-    BoardStatus(grid, lasers, blocks, points): describe the status of the game
-    TreeNode
-    GameTree
 """
 import numpy as np
 from copy import deepcopy
@@ -22,8 +21,10 @@ class BoardStatus():
     **Method**
     
         laser_pathway(self)
-        put_block(block_pos, block_type)
-        delete_block(block_pos, block_type)
+        put_block(self, block_pos, block_type)
+        delete_block(self, block_pos, block_type)
+        print_status(self)
+        print_status(self)
     """
     def __init__(self, grid, lasers, blocks, points):
         self.grid = deepcopy(grid)
@@ -34,18 +35,27 @@ class BoardStatus():
     def laser_pathway(self):
         """
         Function that provide the laser pathway
-        @Author: Wenhao Gao
 
-        :return: *list*
-            list comprising all coordinates that laser would pass
+        **Return**
+            
+            path: *list, list, int*
+                List comprising all coordinates that laser would pass
+        
+        Add by WG
         """
         def board2laser(position):
             """
             Help function that transform the coordinates in board grid to laser grid
-            :param position: *list*
-                position in board grid
-            :return: *list*
-                position in laser grid
+            
+            **Parameters**
+            
+                position: *list, int*
+                    Position in board grid
+            
+            **return**
+                
+                position: *list, int*
+                    Position in laser grid
             """
             result = [0, 0]
             result[0] = position[0] * 2 + 1
@@ -55,10 +65,14 @@ class BoardStatus():
         def laser2board(position):
             """
             Help function that transform the coordinates in laser grid to board grid
-            :param position: *list*
-                position in laser grid
-            :return: *list*
-                position in board grid
+            
+            **Parameters**
+                
+                position: *list, int*
+                    Position in laser grid
+            **Return**
+                position: *list, int*
+                    Position in board grid
             """
             result = [0, 0]
             result[0] = (position[0] - 1) / 2
@@ -70,13 +84,15 @@ class BoardStatus():
             Function that check if two lasor point is in one square
             Help generate legal path
 
-            :param a: *list* with content *int*
-                lazor point 1
+            **Parameters**
+                
+                a: *list, int*
+                Lazor point 1
+                b: *list, int*
+                Lazor point 2
 
-            :param b: *list* with content *int*
-                lazor point 2
-
-            :return: board position that may put a block or None
+            **Return**
+                Board position that may put a block or None
             """
             l = [a, b]
             position = []
@@ -100,6 +116,17 @@ class BoardStatus():
         def laser_propagate(start_point, start_direction, board, path=[]):
             """
             Function that propagate a laser beam
+            
+            **Parameters**
+            
+                start_point: *list, int*
+                start_direction: *list, int*
+                board: *list, list, str*
+                path: *list, list, int, optional*
+                
+            **Returns**
+            
+                path: *list, list, path*
             """
             point = start_point
             direction = start_direction
@@ -263,8 +290,7 @@ class BoardStatus():
                 A matrix describe the board.
             self.blocks: *dict*
                 The updated blocks set after putting block on board.
-        '''
-        
+        '''        
         self.blocks[block_type] -= 1
         if self.blocks[block_type] == 0:
            del self.blocks[block_type] 
@@ -303,6 +329,7 @@ class BoardStatus():
     def copy(self):
         """
         Make a copy of the board state
+        
         Add by WG
         """
         bs = BoardStatus(
@@ -316,7 +343,7 @@ class BoardStatus():
     def print_status(self):
         """
         Print the current board status
-        :return:
+        
         Add by WG
         """
         print 'Board Condition:'
@@ -334,13 +361,31 @@ class BoardStatus():
         print self.points
         return None
 
+def test_bs():
+    filename = "../Lazor_board/showstopper_4.bff"
+    grid, lasers, blocks, points = read_lazor_board(filename)
+    bs = BoardStatus(grid, lasers, blocks, points)    
+    assert bs.laser_pathway() == [[3, 6], [2, 5], [1, 4], [0, 3]], "Method laser_pathway() is incorrect"
+
+    bs.put_block([2, 2], "A")
+    assert bs.grid == [['B', 'o', 'o'], ['o', 'o', 'o'], ['o', 'o', 'A']], "Blocks didn't put in the right place"
+    assert bs.blocks == {'A': 2, 'B': 3}, "Blocks set should be recounted"
+    
+    bs.delete_block([2, 2], "A")
+    assert bs.grid == [['B', 'o', 'o'], ['o', 'o', 'o'], ['o', 'o', 'o']], "Blocks didn't delete right"
+    assert bs.blocks == {'A': 3, 'B': 3}, "Blocks set should be recounted"
+
         
 if __name__ == '__main__':
+    test_bs()
+    print "Everything passed"
     
     # Test code for BoardStatus class
-    f = "test"
-    filename = "../Lazor_board/{}.bff".format(f)
-    grid, lasers, blocks, points = read_lazor_board(filename)
-    bs = BoardStatus(grid, lasers, blocks, points)
-
-    print bs.laser_pathway()
+    filename_list = ["dark_1", "mad_1", "mad_4", "mad_7", "numbered_6", "showstopper_4", "tiny_5", "yarn_5"]
+    for f in filename_list:
+        filename = "../Lazor_board/{}.bff".format(f)
+        grid, lasers, blocks, points = read_lazor_board(filename)
+        bs = BoardStatus(grid, lasers, blocks, points)
+        print "The laser pathway of {} is: ".format(f)
+        print bs.laser_pathway()
+        print "\n"

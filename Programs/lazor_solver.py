@@ -16,84 +16,6 @@ from check import check
 import numpy as np
 import time
 
-
-def square(a, b):
-    """
-    Function that check if two lasor point is in one square
-    Help generate legal path
-
-    :param a: *list* with content *int*
-        lazor point 1
-
-    :param b: *list* with content *int*
-        lazor point 2
-
-    :return: board position that may put a block or None
-    """
-    L = [a, b]
-    position = []
-    for i in range(2):
-        if L[i][0] % 2 != 0:
-            position.append((L[i][0] - 1)/2)
-
-    for i in range(2):
-        if L[i][1] % 2 != 0:
-            position.append((L[i][1] - 1)/2)
-
-    diff_original = [(a[i] - b[i]) for i in range(len(a))]
-    diff = [np.abs(x) == 1 for x in diff_original]
-    if all(diff):
-        return position
-    else:
-        return False
-
-
-def lazor_path(board_status):
-    """
-    Return all positions that on the lazor pathway
-    Help function to generate children
-
-    :param board_state: *class BoardStatus*
-        the board status that want to analyse
-
-    :return: *list* with content *position list*
-        list of position one can place a block
-    """
-    check = []
-    path = board_status.laser_pathway()
-    for i, a in enumerate(path):
-        for j in range(i, len(path)):
-            b = path[j]
-            if square(a, b):
-                position = square(a, b)
-                if board_status.grid[position[1]][position[0]] == 'o':
-                    check.append(position)
-    return check
-
-
-def non_lazor_path(board_status):
-    """
-    Return all positions that not on the lazor pathway
-    Help function to generate children
-
-    :param board_state: *class BoardStatus*
-        the board status that want to analyse
-
-    :return: *list* with content *position list*
-        list of position one can place a block
-    """
-    check = []
-    x_dim = len(board_status.grid[0])
-    y_dim = len(board_status.grid)
-
-    for i in range(x_dim):
-        for j in range(y_dim):
-            position = [i, j]
-            if board_status.grid[position[1]][position[0]] == 'o':
-                check.append(position)
-    return check
-
-
 class Node:
     """
     class that represent a node in a tree
@@ -348,6 +270,101 @@ class LazorSolver:
                 print '*'
         return None
 
+def square(a, b):
+    """
+    Function that check if two lasor point is in one square
+    Help generate legal path
+
+    :param a: *list* with content *int*
+        lazor point 1
+
+    :param b: *list* with content *int*
+        lazor point 2
+
+    :return: board position that may put a block or None
+    """
+    L = [a, b]
+    position = []
+    for i in range(2):
+        if L[i][0] % 2 != 0:
+            position.append((L[i][0] - 1)/2)
+
+    for i in range(2):
+        if L[i][1] % 2 != 0:
+            position.append((L[i][1] - 1)/2)
+
+    diff_original = [(a[i] - b[i]) for i in range(len(a))]
+    diff = [np.abs(x) == 1 for x in diff_original]
+    if all(diff):
+        return position
+    else:
+        return False
+
+def lazor_path(board_status):
+    """
+    Return all positions that on the lazor pathway
+    Help function to generate children
+
+    :param board_state: *class BoardStatus*
+        the board status that want to analyse
+
+    :return: *list* with content *position list*
+        list of position one can place a block
+    """
+    check = []
+    path = board_status.laser_pathway()
+    for i, a in enumerate(path):
+        for j in range(i, len(path)):
+            b = path[j]
+            if square(a, b):
+                position = square(a, b)
+                if board_status.grid[position[1]][position[0]] == 'o':
+                    check.append(position)
+    return check
+
+def non_lazor_path(board_status):
+    """
+    Return all positions that not on the lazor pathway
+    Help function to generate children
+
+    :param board_state: *class BoardStatus*
+        the board status that want to analyse
+
+    :return: *list* with content *position list*
+        list of position one can place a block
+    """
+    check = []
+    x_dim = len(board_status.grid[0])
+    y_dim = len(board_status.grid)
+
+    for i in range(x_dim):
+        for j in range(y_dim):
+            position = [i, j]
+            if board_status.grid[position[1]][position[0]] == 'o':
+                check.append(position)
+    return check
+
+def lazor_run(f_name):
+    filename = "../Lazor_board/{}.bff".format(f_name)
+    grid, lasers, blocks, points = read_lazor_board(filename)
+    bs = BoardStatus(grid, lasers, blocks, points)
+
+    print "{}:".format(f_name)
+    
+    root = Node(bs)
+    root.print_node()
+
+    solver = LazorSolver(root=root)
+    solver.build_tree()    
+    solution = solver.solution()
+
+    if len(solution) == 0:
+        print 'No Solution found!'
+    else:
+        for node in solution:
+            node.print_node(only=True)
+            print '----------------------------------------------------------------------------------------------'
+
 
 if __name__ == '__main__':
     filename_list = ["dark_1", "mad_1", "mad_4", "mad_7", "numbered_6", "showstopper_4", "tiny_5", "yarn_5"]
@@ -355,27 +372,9 @@ if __name__ == '__main__':
         
         time1 = time.time()
         
-        filename = "../Lazor_board/{}.bff".format(f)
-        grid, lasers, blocks, points = read_lazor_board(filename)
-        bs = BoardStatus(grid, lasers, blocks, points)
-
-        print "{}:".format(f)
-        
-        root = Node(bs)
-        root.print_node()
-    
-        solver = LazorSolver(root=root)
-        solver.build_tree()    
-        solution = solver.solution()
+        lazor_run(f)
     
         time2 = time.time()
         dt = time2 - time1
-    
-        if len(solution) == 0:
-            print 'No Solution found!'
-        else:
-            for node in solution:
-                node.print_node(only=True)
-                print '----------------------------------------------------------------------------------------------'
     
         print 'Total time consumed: %.1f\n' % dt

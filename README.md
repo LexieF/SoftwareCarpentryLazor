@@ -1,6 +1,6 @@
 # Group Project - Lazor
 
-A code that will automatically find solutions to the \Lazor" game on Android and iPhone..
+A code that will automatically find solutions to the "Lazor" game on Android and iPhone..
 
 ## Author
 
@@ -31,33 +31,37 @@ The code should be tested in Python 2.7
 
 1. lazor_input.py
 
-  Functions:
-    
-    (i) read_lazor_board - takes a file and returns the grid, laser, blocks, and points as a list 
+  | **Function** | **Discription** | **Input** | **Outputs** |
+  | ------------ | --------------- | --------- | ----------- |
+  | read_lazor_board | read the bff file | filename | grid, lasers, blocks, points |
+  | test_read_lazor_board | check the result of read_lazor_board | None | None |
 
 2. lazor_board.py
     
    Classes:
     
-    (i) BoardStatus - describes the status of the game board
+    BoardStatus - describes the status of the game board
     
-   Functions:
-    
-    (i) laser_pathway - finds the points the laser passes through
-    (ii) board2laser - transforms coordinates from the board grid to the laser grid
-    (iii) laser2board - transforms coordinates from the laser grid to the board grid
-    (iv) square - checks if there are two laser points on one block
-    (v) content - returns the content of the input position
-    (vi) laser_propogate - propogates the laser beam
-    (vii) put_block - puts a block on a specific position on the board
-    (viii) delete_block - deletes a block at a specific position on the board
-    (ix) copy - adds a copy of the board state 
-    
-3. check.py 
+    | **Method** | **Discription** | **Input** | **Outputs** |
+    | ---------- | --------------- | --------- | ----------- |
+    | laser_pathway | finds the points the laser passes through | self | path points |
+    | put_block | puts a block on a specific position on the board | self, block_pos, block_type | self.grid, self.blocks |
+    | delete_block | deletes a block at a specific position on the board | self, block_pos, block_type | self.grid, self.blocks |
+    | copy | adds a copy of the board state | self | instance of BoardStatus class |
+    | print_status | print the current board status | self | None |
 
    Functions:
     
-    (i) check - check the beam of the laser, if the required point is at the end of the laser
+    | **Function** | **Discription** | **Input** | **Outputs** |
+    | ------------ | --------------- | --------- | ----------- |
+    | test_bs | test for BoardStatus class | None | None |
+
+    
+3. check.py 
+
+  | **Function** | **Discription** | **Input** | **Outputs** |
+  | ------------ | --------------- | --------- | ----------- |
+  | check | check the beam of the lazor | instance of BoardStatus class | boolean data type |
     
 4. lazor_solver.py 
 
@@ -80,6 +84,11 @@ The code should be tested in Python 2.7
     (x) print_tree - help function to visualize tree structure 
     
 5. lazor_output.py
+
+  | **Function** | **Discription** | **Input** | **Outputs** |
+  | ------------ | --------------- | --------- | ----------- |
+  | lazor_board_solution_output | Write output files | f_name | None |
+
     
 ## HOW TO RUN
   

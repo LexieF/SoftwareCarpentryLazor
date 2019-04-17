@@ -36,27 +36,26 @@ The code should be tested in Python 2.7
 | read_lazor_board | read the bff file | filename | grid, lasers, blocks, points |
 | test_read_lazor_board | check the result of read_lazor_board | None | None |
 
-  Functions:
-    
-    (i) read_lazor_board -  
-
 2. lazor_board.py
     
    Classes:
     
-    (i) BoardStatus - describes the status of the game board
+    BoardStatus - describes the status of the game board
     
+    | **Method** | **Discription** | **Input** | **Outputs** |
+    | ---------- | --------------- | --------- | ----------- |
+    | laser_pathway | finds the points the laser passes through | self | path points |
+    | put_block | puts a block on a specific position on the board | self, block_pos, block_type | self.grid, self.blocks |
+    | delete_block | deletes a block at a specific position on the board | self, block_pos, block_type | self.grid, self.blocks |
+    | copy | adds a copy of the board state | self | instance of BoardStatus class |
+    | print_status | print the current board status | self | None |
+
    Functions:
     
-    (i) laser_pathway - finds the points the laser passes through
-    (ii) board2laser - transforms coordinates from the board grid to the laser grid
-    (iii) laser2board - transforms coordinates from the laser grid to the board grid
-    (iv) square - checks if there are two laser points on one block
-    (v) content - returns the content of the input position
-    (vi) laser_propogate - propogates the laser beam
-    (vii) put_block - puts a block on a specific position on the board
-    (viii) delete_block - deletes a block at a specific position on the board
-    (ix) copy - adds a copy of the board state 
+    | **Function** | **Discription** | **Input** | **Outputs** |
+    | ------------ | --------------- | --------- | ----------- |
+    | test_bs | test for BoardStatus class | None | None |
+
     
 3. check.py 
 

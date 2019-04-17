@@ -1,22 +1,28 @@
 # Group Project - Lazor
 
-[![Python 2.7]
 A code that will automatically find solutions to the \Lazor" game on Android and iPhone..
 
 ## Author: Joan Golding, Wenhao Gao, Wenye Deng, Yuchun Wang
 
-### Hierarchy of Directory
+## Hierarchy of Directory
+
+This repository contains 3 directory, a PDF handout for Lazor project and a README file.
+
+1. Lazor_board
+  - This directory contains all the given data file
+2. Programs
+  - This directory has 5 python file: lazor_input.py, lazor_board.py, check.py, lazor_solver.py, and lazor_output.py
+  - And details about this file will be explained below
+3. Outputs
+  - This directory contains 8 outputs file with solution corresponding to the 8 given data file
+
+
+
 The input is a Lazor board with several types of blocks. To solve a level of the game, the lazor must pass through certain points and you can do this with reflective/refractive blocks. 
 
 The Lazor Boards can be used to test the code in Python 2.7. 
 The lazor boards are under the folder lazor_board as .biff files. 
 
-Each type of block is represented by a different character. 
-x = no block allowed
-o = blocks allowed
-A = fixed reflect block
-B = fixed opaque block
-C = fixed refract block
 
 To solve we use Depth First Search and the Monte Carlo Method (MCM). 
 

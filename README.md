@@ -13,7 +13,7 @@ This repository contains 3 directory, a PDF handout for Lazor project and a READ
 1. Lazor_board
     - This directory contains all the given .biff files
 2. Programs
-    - This directory has 5 .py file: lazor_input.py, lazor_board.py, check.py, lazor_solver.py, and lazor_output.py
+    - This directory has 5 .py files: lazor_input.py, lazor_board.py, check.py, lazor_solver.py, and lazor_output.py
     - And details about this file will be explained below
 3. Outputs
     - This directory contains 8 outputs file with solution corresponding to the 8 given data file
